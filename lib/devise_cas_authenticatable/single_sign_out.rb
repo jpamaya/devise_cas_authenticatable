@@ -44,7 +44,7 @@ module DeviseCasAuthenticatable
           session.destroy if session
           true
         elsif session_store_class.name =~ /Redis/
-          current_session_store.instance_variable_get(:@pool).del(sid)
+          ActionDispatch::Session::RedisStore.new(Rails.application, Rails.application.config.session_options).destroy_session({}, sid, {})
           true
         elsif session_store_class.name =~ /CacheStore/
           current_session_store.destroy_session({}, sid, {})
